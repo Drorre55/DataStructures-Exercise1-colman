@@ -5,6 +5,7 @@
 #include "DS.h"
 #include <algorithm>
 #include <iostream>
+#include <vector>
 using namespace std;
 using std::min;
 
@@ -48,13 +49,44 @@ CrossResult BigCross1(const Matrix& M, int m) {
             }
         }
     }
-    cout << "m: " << m << ", access count: " << M.getAccessCount() << endl;
+    cout << "Q1. m: " << m << ", access count: " << M.getAccessCount() << endl;
     return best;
 }
 
 CrossResult BigCross2(const Matrix& M, int m) {
     CrossResult best = {-1, -1, 0};
+    
+    std::vector<int> consecutiveFromLeft(m * m, 0);
+    std::vector<int> consecutiveFromUp(m * m, 0);
+    std::vector<int> consecutiveFromRight(m * m, 0);
+    std::vector<int> consecutiveFromDown(m * m, 0);
 
+    for (int row = 1; row < m; row++) {
+        for (int col = 1; col < m; col++) {
+            int currentIdx = (row * m) + col;
+            if (M.get(row, col)) {
+                consecutiveFromLeft[currentIdx] = consecutiveFromLeft[(row * m) + (col - 1)] + 1;
+                consecutiveFromUp[currentIdx] = consecutiveFromUp[((row - 1) * m) + col] + 1;
+            }
+        }
+    }
+    for (int row = m - 2; row > 0; row--) {
+        for (int col = m - 2; col > 0; col--) {
+            int currentIdx = (row * m) + col;
+            if (M.get(row, col)) {
+                consecutiveFromRight[currentIdx] = consecutiveFromRight[(row * m) + (col + 1)] + 1;
+                consecutiveFromDown[currentIdx] = consecutiveFromDown[((row + 1) * m) + col] + 1;
+            }
+            int currentArm = min({ consecutiveFromLeft[currentIdx] , consecutiveFromUp[currentIdx] , 
+                consecutiveFromRight[currentIdx] , consecutiveFromDown[currentIdx] });
+            if (currentArm > best.arm) {
+                best.arm = currentArm;
+                best.row = row;
+                best.col = col;
+            }
+        }
+    }
+    cout << "Q2. m: " << m << ", access count: " << M.getAccessCount() << endl;
     return best;
 
 }
