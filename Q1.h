@@ -4,9 +4,7 @@
 
 #include "DS.h"
 #include <algorithm>
-#include <iostream>
 #include <vector>
-using namespace std;
 using std::min;
 
 struct CrossResult {
@@ -49,7 +47,6 @@ CrossResult BigCross1(const Matrix& M, int m) {
             }
         }
     }
-    cout << "Q1. m: " << m << ", access count: " << M.getAccessCount() << endl;
     return best;
 }
 
@@ -86,7 +83,6 @@ CrossResult BigCross2(const Matrix& M, int m) {
             }
         }
     }
-    cout << "Q2. m: " << m << ", access count: " << M.getAccessCount() << endl;
     return best;
 
 }
