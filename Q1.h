@@ -22,7 +22,9 @@ CrossResult BigCross1(const Matrix& M, int m) {
             if (!M.get(current.row, current.col)) continue;
             
             int maxCurrentPossibleArm = min({ current.row, (m - 1) - current.row, current.col, (m - 1) - current.col });
-
+            
+            if (maxCurrentPossibleArm <= best.arm) continue;
+            
             for (int i = 1; i <= maxCurrentPossibleArm; i++) {
                 int leftIdx[2] = { current.row, current.col - i };
                 int rightIdx[2] = { current.row, current.col + i };
